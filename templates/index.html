@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertainment Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 70%;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 17px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            margin-top: 40px;
+            color: #007bff;
+        }
+        h3 {
+            margin-top: 30px;
+            color: #555;
+        }
+        .results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .results h3 {
+            flex-basis: 100%;
+        }
+        .result-item {
+            flex: 1 1 300px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .result-item:hover {
+            background-color: #f1f1f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .result-item a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Parikram Task - Radha</h1>
+        <form method="post" action="/search">
+            <input type="text" name="query" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+
+        {% if query %}
+            <h2>Results for "{{ query }}"</h2>
+            <div class="results">
+                <h3>IMDb Results</h3>
+                {% for movie in tmdb_data %}
+                    <div class="result-item">{{ movie.title }} ({{ movie.release_date }})</div>
+                {% endfor %}
+            </div>
+
+            <div class="results">
+                <h3>YouTube Results</h3>
+                {% for video in youtube_data %}
+                    <div class="result-item"><a href="https://www.youtube.com/watch?v={{ video.id.videoId }}" target="_blank">{{ video.snippet.title }}</a></div>
+                {% endfor %}
+            </div>
+
+            <div class="results">
+                <h3>News Results</h3>
+                {% for article in news_data %}
+                    <div class="result-item"><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></div>
+                {% endfor %}
+            </div>
+
+            <div class="results">
+                <h3>Spotify Results</h3>
+                {% for track in spotify_data %}
+                    <div class="result-item">{{ track.name }} by {{ track.artists[0].name }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="results">
+                <h3>Wikipedia Results</h3>
+                {% for result in wikipedia_data %}
+                    <div class="result-item"><a href="https://en.wikipedia.org/wiki/{{ result.title }}" target="_blank">{{ result.title }}</a></div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
